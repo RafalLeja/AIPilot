@@ -1,5 +1,7 @@
 // Import the necessary three.js modules
 import * as THREE from 'three';
+import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
+import { Stars } from './stars.js';
 
 // Create a scene
 const scene = new THREE.Scene();
@@ -21,27 +23,21 @@ const spaceship = new THREE.Mesh(spaceshipGeometry, spaceshipMaterial);
 scene.add(spaceship);
 
 // Create the stars that are light sources
-const starGeometry = new THREE.SphereGeometry(0.25, 24, 24);
-const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-for (let i = 0; i < 100; i++) {
-  const star = new THREE.Mesh(starGeometry, starMaterial);
-  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
-  star.position.set(x, y, z);
-  scene.add(star);
-  if (i % 5 == 0){
-    const starLight = new THREE.PointLight(0xffffff, 10, 300);
-    starLight.position.set(x, y, z);
-    scene.add(starLight);
-  }
-  }
+const stars = new Stars(scene, 200);
 
-
-
+// Create the controls
+const controls = new TrackballControls(camera, renderer.domElement);
+controls.rotateSpeed = 2.0;
+controls.dynamicDampingFactor = 0.1;
+controls.maxDistance = 200;
+controls.noPan = true;
+controls.target = spaceship.position;
 
 // Render the scene
 function animate() {
   requestAnimationFrame(animate);
 
+  controls.update();
   renderer.render(scene, camera);
 }
 animate();
