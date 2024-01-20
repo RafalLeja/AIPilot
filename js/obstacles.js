@@ -18,7 +18,7 @@ export class Obstacles{
       orderX = shuffle(orderX);
       for(let i = 0; i < dimX; i++){
         if (orderX[i] == 1){
-          const obstacle = new Obstacle(scene, [i*laneWidth, 0, -z]);
+          const obstacle = new Obstacle(scene, [i*laneWidth - dimX*laneWidth/2, 0, z]);
         }
       }
 
@@ -35,7 +35,7 @@ export class Obstacles{
       orderY = shuffle(orderY);
       for(let i = 0; i < dimY; i++){
         if (orderY[i] == 1){
-          const obstacle = new Obstacle(scene, [0, i*laneWidth, -z], [0, 0, Math.PI/2]);
+          const obstacle = new Obstacle(scene, [0, i*laneWidth - dimY*laneWidth/2, z], [0, 0, Math.PI/2]);
         }
       }
     }
