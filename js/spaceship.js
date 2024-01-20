@@ -9,15 +9,19 @@ export class Spaceship{
     this.spaceship.rotation.set(Math.PI/2, 0, 0);
     scene.add(this.spaceship);
 
-    this.light = new THREE.SpotLight(0xffffff, 1000, 1000);
+    this.light = new THREE.SpotLight(0xffffff, 1000, 100);
     this.target = new THREE.Object3D();
-    this.target.position.set(0, 0, 6);
-    this.light.angle = Math.PI/3;
     this.light.position.set(0, 0, 5); 
-    scene.add(this.target);
+    this.target.position.set(0, 0, 6);
+    this.light.angle = Math.PI/5;
     this.light.target =this.target;
+    scene.add(this.target);
     scene.add(this.light);
     scene.add(this.light.target);
+    
+    this.spaceship.attach(this.target);
+    this.spaceship.attach(this.light);
+    this.spaceship.attach(this.light.target); 
 
     const lightHelper = new THREE.SpotLightHelper(this.light);
     scene.add(lightHelper);
@@ -29,8 +33,6 @@ export class Spaceship{
 
   set position(position){
     this.spaceship.position.set(position[0], position[1], position[2]);
-    this.light.position.set(position[0], position[1], position[2]+5);
-    this.target.position.set(position[0], position[1], position[2]+6);
   }
 
   get rotation(){

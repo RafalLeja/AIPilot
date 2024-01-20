@@ -23,7 +23,7 @@ document.body.appendChild(renderer.domElement);
 const spaceship = new Spaceship(scene);
 
 // Create the steering
-const steering = new Steering(scene, spaceship, 0.1, 0.1);
+const steering = new Steering(scene, spaceship, camera, 0.1, 0.1);
 
 // Create the stars
 const stars = new Stars(scene, 200);
@@ -33,12 +33,12 @@ const obstacles = new Obstacles(scene, 50, 50, 15);
 
 // Create the controls
 const controls = new TrackballControls(camera, renderer.domElement);
-controls.rotat
 controls.rotateSpeed = 2.0;
 controls.dynamicDampingFactor = 0.1;
 controls.maxDistance = 200;
 controls.noPan = true;
 controls.target = spaceship.position;
+// controls.staticMoving = true;
 
 // Render the scene
 function animate() {

@@ -1,9 +1,10 @@
 import * as THREE from 'three';
 
 export class Steering{
-  constructor(scene, spaceship, speed, rotationSpeed){
+  constructor(scene, spaceship, camera, speed, rotationSpeed){
     this.scene = scene;
     this.spaceship = spaceship;
+    this.camera = camera;
     this.speed = speed;
     this.rotationSpeed = rotationSpeed;
   }
@@ -15,6 +16,12 @@ export class Steering{
       x + this.speed*Math.sin(-rZ),
       y + this.speed*Math.cos(rX),
       z + this.speed*Math.sin(rX)];
+
+    const [cX, cY, cZ] = this.camera.position.toArray();
+    this.camera.position.set(
+      cX + this.speed*Math.sin(-rZ),
+      cY + this.speed*Math.cos(rX),
+      cZ + this.speed*Math.sin(rX));
   }
   
 }
