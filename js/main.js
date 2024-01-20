@@ -2,6 +2,7 @@
 import * as THREE from 'three';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 import { Stars } from './stars.js';
+import { Obstacles } from './obstacles.js';
 
 // Create a scene
 const scene = new THREE.Scene();
@@ -13,6 +14,7 @@ camera.position.z = 15;
 // Create a renderer
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.antialias = true;
 document.body.appendChild(renderer.domElement);
 
 // Create the spaceship
@@ -24,6 +26,9 @@ scene.add(spaceship);
 
 // Create the stars that are light sources
 const stars = new Stars(scene, 200);
+
+// Create obstacles
+const obstacles = new Obstacles(scene, 10, 10, 5);
 
 // Create the controls
 const controls = new TrackballControls(camera, renderer.domElement);
