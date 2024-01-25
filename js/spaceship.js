@@ -7,13 +7,22 @@ export class Spaceship{
     const spaceshipGeometry = new THREE.ConeGeometry(4, 8, 8);
     const spaceshipMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
     this.spaceship = new THREE.Mesh(spaceshipGeometry, spaceshipMaterial);
+    this.spaceship.position.set(0, 0, 0);
     this.spaceship.rotation.set(Math.PI/2, 0, 0);
     scene.add(this.spaceship);
+
+    this.colided = false;
 
     // Creating a Cannon object
     this.coliderShape = new CANNON.Cylinder(0.01, 4, 8, 8)
     this.coliderBody = new CANNON.Body({mass: 1})
     this.coliderBody.addShape(this.coliderShape)
+    this.coliderBody.addEventListener("collide", (e) => {console.log("colided"); this.colided = true;});
+
+    this.coliderBody.position = new CANNON.Vec3(0, 0, 0)
+    this.coliderBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), Math.PI/2);
+    this.coliderBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), 0);
+    this.coliderBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), 0);
     world.addBody(this.coliderBody)
     
     this.light = new THREE.SpotLight(0xffffff, 1000, 100);
@@ -39,8 +48,10 @@ export class Spaceship{
   }
   
   set position(position){
-    this.spaceship.position.set(position[0], position[1], position[2]);
-    this.coliderBody.position = new CANNON.Vec3(position[0], position[1], position[2])
+    if (!this.colided) {
+      this.spaceship.position.set(position[0], position[1], position[2]);
+      this.coliderBody.position = new CANNON.Vec3(position[0], position[1], position[2])
+    }
   }
 
   get rotation(){
@@ -49,5 +60,8 @@ export class Spaceship{
 
   set rotation(rotation){
     this.spaceship.rotation.set(rotation[0], rotation[1], rotation[2]);
+    this.coliderBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), rotation[0]);
+    this.coliderBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), rotation[1]);
+    this.coliderBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), rotation[2]);
   }
 }

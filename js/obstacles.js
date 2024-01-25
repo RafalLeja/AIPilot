@@ -57,6 +57,9 @@ class Obstacle{
     const obstacleBody = new CANNON.Body({mass: 1})
     obstacleBody.addShape(obstacleShape)
     obstacleBody.position = new CANNON.Vec3(position[0], position[1], position[2])
+    obstacleBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), rotation[0]);
+    obstacleBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), rotation[1]);
+    obstacleBody.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 0, 1), rotation[2]);
     world.addBody(obstacleBody)
 
     // const obstacleEdges = new THREE.EdgesGeometry(obstacleGeometry);
