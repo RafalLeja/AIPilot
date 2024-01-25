@@ -23,5 +23,13 @@ export class Steering{
       cY + this.speed*Math.cos(rX),
       cZ + this.speed*Math.sin(rX));
   }
+
+  rotate([x,y,z]){
+    const [rX, rY, rZ] = this.spaceship.rotation.toArray();
+    this.spaceship.rotation.set(
+      rX + this.rotationSpeed*x,
+      rY + this.rotationSpeed*y,
+      rZ + this.rotationSpeed*z);
+  }
   
 }
