@@ -28,10 +28,10 @@ export class Steering{
       this.vehicle.body.rotateX(-this.rotationSpeed);
     }
     if (left){
-      this.vehicle.body.rotateY(this.rotationSpeed);
+      this.vehicle.body.rotateZ(this.rotationSpeed);
     }
     if (right){
-      this.vehicle.body.rotateY(-this.rotationSpeed);
+      this.vehicle.body.rotateZ(-this.rotationSpeed);
     }
   }
   

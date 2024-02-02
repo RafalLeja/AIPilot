@@ -8,12 +8,16 @@ export class Spaceship{
     this.vehicle = new Vehicle(scene, obstacles, numberOfSensors);
     this.steering = new Steering(scene, this.vehicle, camera, speed, rotationSpeed);
     this.network = new Network([numberOfSensors*numberOfSensors, 9, 5, 4]);
+
+    this.active = true;
   }
 
   update(){
+    if (!this.active) return;
     this.steering.moveForward();
     const sensors = this.vehicle.Sensors.values.flat();
     const output = this.network.feedForward(sensors);
     this.steering.rotate(output);
+    this.active = !this.vehicle.crashed;
   }
 }

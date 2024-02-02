@@ -27,9 +27,6 @@ const stars = new Stars(scene, 200);
 // Create the spaceship
 const spaceship = new Spaceship(scene, obstacles, camera, 0.5, 0.1, 5);
 
-// Create the steering
-// const steering = new Steering(scene, spaceship, camera, 0.5, 0.1);
-
 // Create the controls
 const controls = new TrackballControls(camera, renderer.domElement);
 controls.rotateSpeed = 2.0;

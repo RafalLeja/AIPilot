@@ -37,17 +37,14 @@ export class Vehicle{
     this.body.attach(this.light);
     this.body.attach(this.light.target); 
 
-    const lightHelper = new THREE.SpotLightHelper(this.light);
-    scene.add(lightHelper);
   }
 
   moveForward(dist){
-    if (this.crashed) return;
     this.body.translateY(dist);
     this.colider.copy( this.body.geometry.boundingBox ).applyMatrix4( this.body.matrixWorld );
     this.Sensors.update();
     this.crashed = this.collisionDetection();
-    this.Sensors.visible(this.active);
+    this.Sensors.visible(!this.crashed);
   }
 
   collisionDetection() {
