@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Sensors } from './sensors';
 
-export class Spaceship{
+export class Vehicle{
   constructor(scene, obstacles){
     this.obstacles = obstacles.All;
 
@@ -9,13 +9,13 @@ export class Spaceship{
     const spaceshipGeometry = new THREE.ConeGeometry(4, 8, 8);
     const spaceshipMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
 
-    this.spaceship = new THREE.Mesh(spaceshipGeometry, spaceshipMaterial);
-    this.spaceship.position.set(0, 0, 0);
-    this.spaceship.rotation.set(Math.PI/2, 0, 0);
+    this.vehicle = new THREE.Mesh(spaceshipGeometry, spaceshipMaterial);
+    this.vehicle.position.set(0, 0, 0);
+    this.vehicle.rotation.set(Math.PI/2, 0, 0);
     this.acitve = true;
     
     this.colider = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
-    this.colider.setFromObject(this.spaceship);
+    this.colider.setFromObject(this.vehicle);
 
     this.crashed = false;
     
@@ -26,16 +26,16 @@ export class Spaceship{
     this.light.angle = Math.PI/5;
     this.light.target =this.target;
 
-    this.Sensors = new Sensors(scene, this.spaceship, this.obstacles);
+    this.Sensors = new Sensors(scene, this.vehicle, this.obstacles);
 
-    scene.add(this.spaceship);
+    scene.add(this.vehicle);
     scene.add(this.target);
     scene.add(this.light);
     scene.add(this.light.target);
 
-    this.spaceship.attach(this.target);
-    this.spaceship.attach(this.light);
-    this.spaceship.attach(this.light.target); 
+    this.vehicle.attach(this.target);
+    this.vehicle.attach(this.light);
+    this.vehicle.attach(this.light.target); 
 
     const lightHelper = new THREE.SpotLightHelper(this.light);
     scene.add(lightHelper);
@@ -43,8 +43,8 @@ export class Spaceship{
 
   moveForward(dist){
     if (this.crashed) return;
-    this.spaceship.translateY(dist);
-    this.colider.copy( this.spaceship.geometry.boundingBox ).applyMatrix4( this.spaceship.matrixWorld );
+    this.vehicle.translateY(dist);
+    this.colider.copy( this.vehicle.geometry.boundingBox ).applyMatrix4( this.vehicle.matrixWorld );
     this.Sensors.update();
     // console.log(this.Sensors.values);
     this.crashed = this.collisionDetection();
@@ -55,7 +55,7 @@ export class Spaceship{
     let colided = false;
     for (let i = 0; i < this.obstacles.length; i++) {
       const obstacle = this.obstacles[i];
-      if (Math.abs( obstacle.body.position.z - this.spaceship.position.z) < 5) {
+      if (Math.abs( obstacle.body.position.z - this.vehicle.position.z) < 5) {
         if (this.colider.intersectsBox(obstacle.colider)) {
           colided = true;
         }
@@ -65,19 +65,19 @@ export class Spaceship{
   }
   
   get position(){
-    return this.spaceship.position;
+    return this.vehicle.position;
   }
   
   set position(position){
-    this.spaceship.position.set(position[0], position[1], position[2]);
-    this.colider.copy( this.spaceship.geometry.boundingBox ).applyMatrix4( this.spaceship.matrixWorld );
+    this.vehicle.position.set(position[0], position[1], position[2]);
+    this.colider.copy( this.vehicle.geometry.boundingBox ).applyMatrix4( this.vehicle.matrixWorld );
   }
 
   get rotation(){
-    return this.spaceship.rotation;
+    return this.vehicle.rotation;
   }
 
   set rotation(rotation){
-    this.spaceship.rotation.set(rotation[0], rotation[1], rotation[2]);
+    this.vehicle.rotation.set(rotation[0], rotation[1], rotation[2]);
   }
 }
