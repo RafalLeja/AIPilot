@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { Sensors } from './sensors';
 
 export class Spaceship{
   constructor(scene, obstacles){
@@ -11,6 +12,7 @@ export class Spaceship{
     this.spaceship = new THREE.Mesh(spaceshipGeometry, spaceshipMaterial);
     this.spaceship.position.set(0, 0, 0);
     this.spaceship.rotation.set(Math.PI/2, 0, 0);
+    this.acitve = true;
     
     this.colider = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
     this.colider.setFromObject(this.spaceship);
@@ -23,6 +25,8 @@ export class Spaceship{
     this.target.position.set(0, 0, 6);
     this.light.angle = Math.PI/5;
     this.light.target =this.target;
+
+    this.Sensors = new Sensors(scene, this.spaceship, this.obstacles);
 
     scene.add(this.spaceship);
     scene.add(this.target);
@@ -41,7 +45,10 @@ export class Spaceship{
     if (this.crashed) return;
     this.spaceship.translateY(dist);
     this.colider.copy( this.spaceship.geometry.boundingBox ).applyMatrix4( this.spaceship.matrixWorld );
+    this.Sensors.update();
+    // console.log(this.Sensors.values);
     this.crashed = this.collisionDetection();
+    this.Sensors.visible(this.active);
   }
 
   collisionDetection() {

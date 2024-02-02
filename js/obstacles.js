@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 
 export class Obstacles{
-  constructor(scene,  dimX = 5, dimY =5, maxObstacles = 3){
+  constructor(scene,  dimX = 5, dimY =5, maxObstacles = 3, layers = 10){
     this.All = [];
     const laneWidth = 7;
     const inf = 1000
-    for(let z = 100; z < inf; z += laneWidth*15){
+    for(let z = 100; z < 10*15*laneWidth+100; z += laneWidth*15){
       // generating random veritcal obstacles
       const numberX = Math.floor(Math.random() * maxObstacles) + 1;
       let orderX = []
@@ -52,9 +52,11 @@ class Obstacle{
     // ThreeJS object
     const obstacleGeometry = new THREE.CylinderGeometry(5, 5, inf, 5, 11);
     const obstacleMesh = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    obstacleMesh.side = THREE.DoubleSide;
     this.body = new THREE.Mesh(obstacleGeometry, obstacleMesh);
     this.body.position.set(position[0], position[1], position[2]);
     this.body.rotation.set(rotation[0], rotation[1], rotation[2]);
+    this.body.updateMatrixWorld();
     
     this.colider = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
     this.colider.setFromObject(this.body);
