@@ -6,11 +6,11 @@ export class Sensors{
     this.spaceship = spaceship;
     this.obstacles = obstacles;
     this.sensorRange = sensorRange;
-    this.default = sensorRange;
+    this.default = 1;
 
     this.sensors = [...Array(SensPerAxis)].map(() => Array(SensPerAxis));
-    this.RedArrows = [...Array(SensPerAxis)].map(() => Array(SensPerAxis));
     this.GreenArrows = [...Array(SensPerAxis)].map(() => Array(SensPerAxis));
+    this.RedArrows = [...Array(SensPerAxis)].map(() => Array(SensPerAxis));
     this.values = [...Array(SensPerAxis)].map(() => Array(SensPerAxis));
 
     const halfSens = Math.floor(SensPerAxis / 2);
@@ -36,12 +36,12 @@ export class Sensors{
         
         this.sensors[i][j] = new THREE.Raycaster(this.spaceship.position, dir, 0, sensorRange);
         this.sensors[i][j].layers.enableAll();
-        const GreenArrow = new THREE.ArrowHelper(dir, this.spaceship.position, sensorRange, 0x00ff00)
         const RedArrow = new THREE.ArrowHelper(dir, this.spaceship.position, sensorRange, 0xff0000)
-        this.RedArrows[i][j] = RedArrow;
+        const GreenArrow = new THREE.ArrowHelper(dir, this.spaceship.position, sensorRange, 0x00ff00)
         this.GreenArrows[i][j] = GreenArrow;
-        this.scene.add(RedArrow);
+        this.RedArrows[i][j] = RedArrow;
         this.scene.add(GreenArrow);
+        this.scene.add(RedArrow);
       }
     }
   }
@@ -51,18 +51,16 @@ export class Sensors{
     for (let i = 0; i < this.sensors.length; i++) {
       for (let j = 0; j < this.sensors[i].length; j++) {
         this.sensors[i][j].set(this.spaceship.position, this.sensors[i][j].ray.direction);
-        this.RedArrows[i][j].position.copy(this.spaceship.position);
         this.GreenArrows[i][j].position.copy(this.spaceship.position);
+        this.RedArrows[i][j].position.copy(this.spaceship.position);
         const intersects = this.sensors[i][j].intersectObjects(nearby);
-        if (i==2&&j==2) {
-        // console.log(nearby, intersects, this.sensors[i][j]);
-        }
         if (intersects.length > 0){
-          this.values[i][j] = intersects[0].distance;
+          this.values[i][j] = intersects[0].distance/this.sensorRange;
+          this.GreenArrows[i][j].setLength(intersects[0].distance);
         }else{
           this.values[i][j] = this.default;
+          this.GreenArrows[i][j].setLength(this.sensorRange);
         }
-        this.GreenArrows[i][j].setLength(this.values[i][j]);
       }
     }
   }
@@ -70,13 +68,12 @@ export class Sensors{
   visible(bool){
     for (let i = 0; i < this.sensors.length; i++) {
       for (let j = 0; j < this.sensors[i].length; j++) {
-        this.RedArrows[i][j].visible = bool;
+        this.GreenArrows[i][j].visible = bool;
       }
     }
-
     for (let i = 0; i < this.sensors.length; i++) {
       for (let j = 0; j < this.sensors[i].length; j++) {
-        this.GreenArrows[i][j].visible = bool;
+        this.RedArrows[i][j].visible = bool;
       }
     }
   }
