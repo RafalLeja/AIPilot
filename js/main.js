@@ -3,8 +3,7 @@ import * as THREE from 'three';
 import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 import { Stars } from './stars.js';
 import { Obstacles } from './obstacles.js';
-import { Vehicle } from './vehicle.js';
-import { Steering } from './steering.js';
+import { Spaceship } from './spaceship.js';
 
 // Create a scene
 const scene = new THREE.Scene();
@@ -26,10 +25,10 @@ const obstacles = new Obstacles(scene, 10, 10, 10, 1);
 const stars = new Stars(scene, 200);
 
 // Create the spaceship
-const spaceship = new Vehicle(scene, obstacles);
+const spaceship = new Spaceship(scene, obstacles, camera, 0.5, 0.1, 5);
 
 // Create the steering
-const steering = new Steering(scene, spaceship, camera, 0.5, 0.1);
+// const steering = new Steering(scene, spaceship, camera, 0.5, 0.1);
 
 // Create the controls
 const controls = new TrackballControls(camera, renderer.domElement);
@@ -37,7 +36,7 @@ controls.rotateSpeed = 2.0;
 controls.dynamicDampingFactor = 0.1;
 controls.maxDistance = 200;
 controls.noPan = true;
-controls.target = spaceship.position;
+controls.target = spaceship.vehicle.body.position;
 
 
 // Render the scene
@@ -45,7 +44,7 @@ function animate() {
   requestAnimationFrame(animate);
   
   // move the spaceship
-  steering.moveForward();
+  spaceship.update();
 
   controls.update();
   renderer.render(scene, camera);

@@ -1,4 +1,4 @@
-export class NeuralNetwork{
+export class Network{
   constructor(layerSizes){
     this.layers = [];
     for (let i = 0; i < layerSizes.length-1; i++) {
@@ -21,6 +21,7 @@ export class NeuralNetwork{
 
 export class Layer{
   constructor(inputSize, outputSize, binary = false){
+    this.binary = binary;
     this.inputSize = inputSize;
     this.outputSize = outputSize;
     this.input = Array(inputSize);
@@ -47,7 +48,7 @@ export class Layer{
       for (let j = 0; j < this.inputSize; j++) {
         sum += this.weights[i][j] * input[j];
       }
-      if (binary) {
+      if (this.binary) {
         this.output[i] = sum + this.biases[i] > 0 ? 1 : 0;
       }else{
         this.output[i] = this.sigmoid(sum + this.biases[i]);

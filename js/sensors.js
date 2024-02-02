@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 
 export class Sensors{
-  constructor(scene, spaceship, obstacles, SensPerAxis = 5, sensorRange = 50, angle = Math.PI/4){
+  constructor(scene, vehicle, obstacles, SensPerAxis = 5, sensorRange = 50, angle = Math.PI/4){
     this.scene = scene;
-    this.spaceship = spaceship;
+    this.vehicle = vehicle;
     this.obstacles = obstacles;
     this.sensorRange = sensorRange;
     this.default = 1;
@@ -34,10 +34,10 @@ export class Sensors{
         let dir = new THREE.Vector3(y, b, sensorRange);
         dir.normalize();
         
-        this.sensors[i][j] = new THREE.Raycaster(this.spaceship.position, dir, 0, sensorRange);
+        this.sensors[i][j] = new THREE.Raycaster(this.vehicle.position, dir, 0, sensorRange);
         this.sensors[i][j].layers.enableAll();
-        const RedArrow = new THREE.ArrowHelper(dir, this.spaceship.position, sensorRange, 0xff0000)
-        const GreenArrow = new THREE.ArrowHelper(dir, this.spaceship.position, sensorRange, 0x00ff00)
+        const RedArrow = new THREE.ArrowHelper(dir, this.vehicle.position, sensorRange, 0xff0000)
+        const GreenArrow = new THREE.ArrowHelper(dir, this.vehicle.position, sensorRange, 0x00ff00)
         this.GreenArrows[i][j] = GreenArrow;
         this.RedArrows[i][j] = RedArrow;
         this.scene.add(GreenArrow);
@@ -47,12 +47,12 @@ export class Sensors{
   }
 
   update(){
-    const nearby = this.obstacles.filter(obstacle => Math.abs(obstacle.body.position.z - this.spaceship.position.z) <= this.sensorRange).map(obstacle => obstacle.body);
+    const nearby = this.obstacles.filter(obstacle => Math.abs(obstacle.body.position.z - this.vehicle.position.z) <= this.sensorRange).map(obstacle => obstacle.body);
     for (let i = 0; i < this.sensors.length; i++) {
       for (let j = 0; j < this.sensors[i].length; j++) {
-        this.sensors[i][j].set(this.spaceship.position, this.sensors[i][j].ray.direction);
-        this.GreenArrows[i][j].position.copy(this.spaceship.position);
-        this.RedArrows[i][j].position.copy(this.spaceship.position);
+        this.sensors[i][j].set(this.vehicle.position, this.sensors[i][j].ray.direction);
+        this.GreenArrows[i][j].position.copy(this.vehicle.position);
+        this.RedArrows[i][j].position.copy(this.vehicle.position);
         const intersects = this.sensors[i][j].intersectObjects(nearby);
         if (intersects.length > 0){
           this.values[i][j] = intersects[0].distance/this.sensorRange;
