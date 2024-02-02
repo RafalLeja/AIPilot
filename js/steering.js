@@ -11,17 +11,22 @@ export class Steering{
 
   moveForward(){
     const [x, y, z] = this.spaceship.position.toArray();
-    const [rX, rY, rZ] = this.spaceship.rotation.toArray();
-    this.spaceship.position = [
-      x + this.speed*Math.sin(-rZ),
-      y + this.speed*Math.cos(rX),
-      z + this.speed*Math.sin(rX)];
+    this.spaceship.spaceship.translateY(this.speed);
+    
+    const [nX, nY, nZ] = this.spaceship.position.toArray();
+    // const [rX, rY, rZ] = this.spaceship.rotation.toArray();
+    // this.spaceship.position = [
+    //   x + this.speed*Math.sin(-rZ),
+    //   y + this.speed*Math.cos(rX),
+    //   z + this.speed*Math.sin(rX)];
 
     const [cX, cY, cZ] = this.camera.position.toArray();
     this.camera.position.set(
-      cX + this.speed*Math.sin(-rZ),
-      cY + this.speed*Math.cos(rX),
-      cZ + this.speed*Math.sin(rX));
+      cX + (nX - x),
+      cY + (nY - y),
+      cZ + (nZ - z));
+
+    // this.camera.translateY(this.speed);
   }
 
   rotate([x,y,z]){
