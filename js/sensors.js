@@ -6,7 +6,7 @@ export class Sensors{
     this.vehicle = vehicle;
     this.obstacles = obstacles;
     this.sensorRange = sensorRange;
-    this.default = 1;
+    this.default = 0;
 
     this.sensors = [...Array(SensPerAxis)].map(() => Array(SensPerAxis));
     this.GreenArrows = [...Array(SensPerAxis)].map(() => Array(SensPerAxis));
@@ -55,7 +55,7 @@ export class Sensors{
         this.RedArrows[i][j].position.copy(this.vehicle.position);
         const intersects = this.sensors[i][j].intersectObjects(nearby);
         if (intersects.length > 0){
-          this.values[i][j] = intersects[0].distance/this.sensorRange;
+          this.values[i][j] = 1 - (intersects[0].distance/this.sensorRange);
           this.GreenArrows[i][j].setLength(intersects[0].distance);
         }else{
           this.values[i][j] = this.default;
