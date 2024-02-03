@@ -9,15 +9,17 @@ export class Steering{
     this.rotationSpeed = rotationSpeed;
   }
 
-  moveForward(){
+  moveForward(leading){
     const [x, y, z] = this.vehicle.position.toArray();
     this.vehicle.moveForward(this.speed);
-    const [nX, nY, nZ] = this.vehicle.position.toArray();
-    const [cX, cY, cZ] = this.camera.position.toArray();
-    this.camera.position.set(
-      cX + (nX - x),
-      cY + (nY - y),
-      cZ + (nZ - z));
+    if (leading){
+      const [nX, nY, nZ] = this.vehicle.position.toArray();
+      const [cX, cY, cZ] = this.camera.position.toArray();
+      this.camera.position.set(
+        cX + (nX - x),
+        cY + (nY - y),
+        cZ + (nZ - z));
+    }
   }
 
   rotate([up, down, left, right]){

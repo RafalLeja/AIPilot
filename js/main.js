@@ -5,6 +5,7 @@ import { Stars } from './stars.js';
 import { Obstacles } from './obstacles.js';
 import { Spaceship } from './spaceship.js';
 import { UI } from './ui.js';
+import { Fleet } from './fleet.js';
 
 // Create a scene
 const scene = new THREE.Scene();
@@ -20,13 +21,10 @@ renderer.antialias = true;
 document.body.appendChild(renderer.domElement);
 
 // Create obstacles
-const obstacles = new Obstacles(scene, 10, 10, 10, 1);
+const obstacles = new Obstacles(scene, 15, 15, 8, 1);
 
 // Create the stars
 const stars = new Stars(scene, 200);
-
-// Create the spaceship
-const spaceship = new Spaceship(scene, obstacles, camera, 0.5, 0.1, 5);
 
 // Create the UI
 // const ui = new UI(spaceship);
@@ -37,15 +35,16 @@ controls.rotateSpeed = 2.0;
 controls.dynamicDampingFactor = 0.1;
 controls.maxDistance = 200;
 controls.noPan = true;
-controls.target = spaceship.vehicle.body.position;
 
+// Create the fleet
+const fleet = new Fleet(scene, obstacles, camera, controls, 5);
 
 // Render the scene
 function animate() {
   requestAnimationFrame(animate);
   
-  // move the spaceship
-  spaceship.update();
+  // move the spaceships
+  fleet.update();
 
   // update the UI
   // ui.update();

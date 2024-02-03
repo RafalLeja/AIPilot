@@ -10,14 +10,21 @@ export class Spaceship{
     this.network = new Network([numberOfSensors*numberOfSensors, 9, 5, 4]);
 
     this.active = true;
+    this.leading = false;
   }
 
   update(){
     if (!this.active) return;
-    this.steering.moveForward();
-    const sensors = this.vehicle.Sensors.values.flat();
+    this.steering.moveForward(this.leading);
+    const sensors = this.vehicle.sensors.values.flat();
     const output = this.network.feedForward(sensors);
     this.steering.rotate(output);
+    this.vehicle.sensors.visible(this.leading);
+    if (this.leading){
+      this.vehicle.spaceshipMaterial.color.set(0x00ff00);
+    }else{
+      this.vehicle.spaceshipMaterial.color.set(0xaaaaaa);
+    }
     this.active = !this.vehicle.crashed;
   }
 }

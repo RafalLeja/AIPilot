@@ -7,9 +7,9 @@ export class Vehicle{
 
     // Creating a ThreeJS object 
     const spaceshipGeometry = new THREE.ConeGeometry(4, 8, 8);
-    const spaceshipMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
+    this.spaceshipMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
 
-    this.body = new THREE.Mesh(spaceshipGeometry, spaceshipMaterial);
+    this.body = new THREE.Mesh(spaceshipGeometry, this.spaceshipMaterial);
     this.body.position.set(0, 0, 0);
     this.body.rotation.set(Math.PI/2, 0, 0);
     this.acitve = true;
@@ -26,7 +26,7 @@ export class Vehicle{
     this.light.angle = Math.PI/5;
     this.light.target =this.target;
 
-    this.Sensors = new Sensors(scene, this.body, this.obstacles, numberOfSensors);
+    this.sensors = new Sensors(scene, this.body, this.obstacles, numberOfSensors);
 
     scene.add(this.body);
     scene.add(this.target);
@@ -36,15 +36,14 @@ export class Vehicle{
     this.body.attach(this.target);
     this.body.attach(this.light);
     this.body.attach(this.light.target); 
-
   }
 
   moveForward(dist){
     this.body.translateY(dist);
     this.colider.copy( this.body.geometry.boundingBox ).applyMatrix4( this.body.matrixWorld );
-    this.Sensors.update();
+    this.sensors.update();
     this.crashed = this.collisionDetection();
-    this.Sensors.visible(!this.crashed);
+    this.sensors.visible(!this.crashed);
   }
 
   collisionDetection() {
