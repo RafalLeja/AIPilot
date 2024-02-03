@@ -23,7 +23,7 @@ export class Vehicle{
     this.target = new THREE.Object3D();
     this.light.position.set(0, 0, 5); 
     this.target.position.set(0, 0, 6);
-    this.light.angle = Math.PI/5;
+    this.light.angle = Math.PI/2;
     this.light.target =this.target;
 
     this.sensors = new Sensors(scene, this.body, this.obstacles, numberOfSensors);

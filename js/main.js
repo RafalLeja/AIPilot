@@ -21,13 +21,10 @@ renderer.antialias = true;
 document.body.appendChild(renderer.domElement);
 
 // Create obstacles
-const obstacles = new Obstacles(scene, 15, 15, 8, 1);
+const obstacles = new Obstacles(scene, 25, 25, 8, 1);
 
 // Create the stars
 const stars = new Stars(scene, 200);
-
-// Create the UI
-// const ui = new UI(spaceship);
 
 // Create the controls
 const controls = new TrackballControls(camera, renderer.domElement);
@@ -38,6 +35,9 @@ controls.noPan = true;
 
 // Create the fleet
 const fleet = new Fleet(scene, obstacles, camera, controls, 5);
+
+// Create the UI
+const ui = new UI(fleet);
 
 // Render the scene
 function animate() {

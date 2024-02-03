@@ -17,6 +17,24 @@ export class Network{
     }
     return output;
   }
+
+  mutate(model, rate=1){
+    this.layers = model.layers;
+    for (let i = 0; i < model.layers.length; i++) {
+      for (let j = 0; j < model.layers[i].outputSize; j++) {
+        this.layers[i].biases[j] += Math.random()*rate*2-rate;
+        for (let k = 0; k < model.layers[i].inputSize; k++) {
+          this.layers[i].weights[j][k] += Math.random()*rate*2-rate;
+        }
+      }
+    }
+  }
+
+  reset(){
+    for (let i = 0; i < this.layers.length; i++) {
+      this.layers[i].init();
+    }
+  }
 }
 
 export class Layer{
