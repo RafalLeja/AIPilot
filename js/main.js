@@ -4,6 +4,7 @@ import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls
 import { Stars } from './stars.js';
 import { Obstacles } from './obstacles.js';
 import { Spaceship } from './spaceship.js';
+import { UI } from './ui.js';
 
 // Create a scene
 const scene = new THREE.Scene();
@@ -27,6 +28,9 @@ const stars = new Stars(scene, 200);
 // Create the spaceship
 const spaceship = new Spaceship(scene, obstacles, camera, 0.5, 0.1, 5);
 
+// Create the UI
+// const ui = new UI(spaceship);
+
 // Create the controls
 const controls = new TrackballControls(camera, renderer.domElement);
 controls.rotateSpeed = 2.0;
@@ -42,6 +46,9 @@ function animate() {
   
   // move the spaceship
   spaceship.update();
+
+  // update the UI
+  // ui.update();
 
   controls.update();
   renderer.render(scene, camera);

@@ -6,5 +6,19 @@ body {
 canvas {
     display: block;
     margin: 0 auto;
-    background-color: #000;
+    background-color: black;
 } 
+
+#UI {
+    width: 40%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.UI_active {
+    z-index: 1;
+}
+
+.UI_inactive {
+    z-index: 0;
+}
